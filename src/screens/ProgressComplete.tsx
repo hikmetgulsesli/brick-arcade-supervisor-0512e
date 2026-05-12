@@ -7,8 +7,8 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
-import { ArrowRight, Circle } from "lucide-react";
-
+import { ArrowRight, Circle, RotateCcw } from "lucide-react";
+import { useAppContext } from "../contexts/AppContext";
 
 export type ProgressCompleteActionId = "restart-1" | "next-level-2" | "return-to-menu-3";
 
@@ -16,7 +16,17 @@ export interface ProgressCompleteProps {
   actions?: Partial<Record<ProgressCompleteActionId, () => void>>;
 }
 
+function formatNumber(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
 export function ProgressComplete({ actions }: ProgressCompleteProps) {
+  const { score, playTimeMs, level } = useAppContext();
+
+  const timeBonus = Math.max(0, Math.floor((180_000 - playTimeMs) / 4));
+  const accuracy = Math.min(100, Math.max(50, 100 - Math.floor(playTimeMs / 25_000)));
+  const total = score + timeBonus;
+
   return (
     <>
       <main className="flex-1 flex items-center justify-center p-margin-mobile md:p-margin-desktop z-10 relative">
@@ -29,24 +39,24 @@ export function ProgressComplete({ actions }: ProgressCompleteProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div className="bg-surface border border-outline-variant p-4 flex flex-col gap-2">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">Base Score</span>
-      <span className="font-label-bold text-label-bold text-on-surface text-2xl">45,200</span>
+      <span className="font-label-bold text-label-bold text-on-surface text-2xl">{formatNumber(score)}</span>
       </div>
       <div className="bg-surface border border-outline-variant p-4 flex flex-col gap-2">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">Time Bonus</span>
-      <span className="font-label-bold text-label-bold text-secondary text-2xl">+12,500</span>
+      <span className="font-label-bold text-label-bold text-secondary text-2xl">+{formatNumber(timeBonus)}</span>
       </div>
       <div className="bg-surface border border-outline-variant p-4 flex flex-col gap-2">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">Accuracy</span>
-      <span className="font-label-bold text-label-bold text-on-surface text-2xl">94%</span>
+      <span className="font-label-bold text-label-bold text-on-surface text-2xl">{accuracy}%</span>
       </div>
       <div className="bg-surface border border-primary p-4 flex flex-col gap-2 neon-glow">
       <span className="font-hud-sm text-hud-sm text-primary">Total Rating</span>
-      <span className="font-hud-lg text-hud-lg text-primary">57,700</span>
+      <span className="font-hud-lg text-hud-lg text-primary">{formatNumber(total)}</span>
       </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
       <button className="h-touch-target px-8 bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold hover:border-primary transition-colors duration-200 uppercase flex items-center justify-center gap-2" type="button" data-action-id="restart-1" onClick={actions?.["restart-1"]}>
-      <Circle className="text-[18px]" aria-hidden={true} focusable="false" />
+      <RotateCcw className="text-[18px]" aria-hidden={true} focusable="false" />
                           Restart
                       </button>
       <button className="h-touch-target px-8 bg-surface border-2 border-primary text-primary font-label-bold text-label-bold hover:bg-primary hover:text-surface transition-colors duration-200 uppercase neon-glow flex items-center justify-center gap-2" type="button" data-action-id="next-level-2" onClick={actions?.["next-level-2"]}>

@@ -7,8 +7,9 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
-import { Circle, Play, Settings } from "lucide-react";
-
+import { HelpCircle, Play, Settings } from "lucide-react";
+import { useState } from "react";
+import { useAppContext } from "../contexts/AppContext";
 
 export type MainMenuActionId = "start-game-1" | "how-to-play-2" | "settings-3";
 
@@ -16,7 +17,15 @@ export interface MainMenuProps {
   actions?: Partial<Record<MainMenuActionId, () => void>>;
 }
 
+function formatScore(n: number): string {
+  return n.toLocaleString("en-US", { minimumIntegerDigits: 1 });
+}
+
 export function MainMenu({ actions }: MainMenuProps) {
+  const { highScore } = useAppContext();
+  const [showHighScoreDetail, setShowHighScoreDetail] = useState(false);
+  const [showVersionDetail, setShowVersionDetail] = useState(false);
+
   return (
     <>
       {/* Playfield Area */}
@@ -42,7 +51,7 @@ export function MainMenu({ actions }: MainMenuProps) {
       </button>
       {/* Help Action */}
       <button className="bg-[#111827] border border-[#334155] hover:border-primary text-on-surface hover:text-primary transition-colors duration-200 h-12 flex items-center justify-center gap-3 group" type="button" data-action-id="how-to-play-2" onClick={actions?.["how-to-play-2"]}>
-      <Circle className="text-on-surface-variant group-hover:text-primary transition-colors" aria-hidden={true} focusable="false" />
+      <HelpCircle className="text-on-surface-variant group-hover:text-primary transition-colors" aria-hidden={true} focusable="false" />
       <span className="font-label-bold text-label-bold uppercase text-on-surface-variant group-hover:text-primary transition-colors">HOW TO PLAY</span>
       </button>
       {/* Settings Action */}
@@ -56,15 +65,21 @@ export function MainMenu({ actions }: MainMenuProps) {
       {/* Metadata / Bottom Bar */}
       <footer className="w-full flex justify-between items-end p-margin-mobile md:p-margin-desktop z-10 border-t border-outline-variant bg-[#111827]/80 backdrop-blur-sm">
       {/* High Score HUD Chip */}
-      <div className="border border-[#334155] bg-[#111827] px-3 py-2 flex flex-col items-start min-w-[120px]">
+      <button className="border border-[#334155] bg-[#111827] px-3 py-2 flex flex-col items-start min-w-[120px] text-left cursor-pointer hover:border-primary transition-colors" type="button" onClick={() => setShowHighScoreDetail((v) => !v)}>
       <span className="font-hud-sm text-hud-sm text-on-surface-variant uppercase mb-1">HIGH SCORE</span>
-      <span className="font-label-bold text-label-bold text-primary">09,482,100</span>
-      </div>
+      <span className="font-label-bold text-label-bold text-primary">{formatScore(highScore)}</span>
+      {showHighScoreDetail && (
+        <span className="font-hud-sm text-hud-sm text-primary mt-1">Personal Best</span>
+      )}
+      </button>
       {/* Version Metadata */}
-      <div className="text-right flex flex-col items-end opacity-70">
+      <button className="text-right flex flex-col items-end opacity-70 hover:opacity-100 transition-opacity cursor-pointer" type="button" onClick={() => setShowVersionDetail((v) => !v)}>
       <span className="font-hud-sm text-hud-sm text-on-surface uppercase">v2.4.1-rc</span>
       <span className="font-hud-sm text-hud-sm text-on-surface-variant uppercase mt-1">OS_V1_CORE</span>
-      </div>
+      {showVersionDetail && (
+        <span className="font-hud-sm text-hud-sm text-primary mt-1">Build: 2024.04.12</span>
+      )}
+      </button>
       </footer>
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-10">
