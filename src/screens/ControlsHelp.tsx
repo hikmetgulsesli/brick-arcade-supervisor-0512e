@@ -1,6 +1,6 @@
 // AUTO-GENERATED from Stitch — DO NOT modify layout or CSS
 // Screen: Controls Help
-// 
+//
 // AGENT INSTRUCTIONS:
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
@@ -8,7 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, MousePointerClick, X } from "lucide-react";
-
+import { useAppContext } from "../contexts/AppContext";
 
 export type ControlsHelpActionId = "button-1-1" | "acknowledge-2";
 
@@ -17,6 +17,26 @@ export interface ControlsHelpProps {
 }
 
 export function ControlsHelp({ actions }: ControlsHelpProps) {
+  const { goToMenu } = useAppContext();
+
+  const handleClose = () => {
+    const action = actions?.["button-1-1"];
+    if (action) {
+      action();
+    } else {
+      goToMenu();
+    }
+  };
+
+  const handleAcknowledge = () => {
+    const action = actions?.["acknowledge-2"];
+    if (action) {
+      action();
+    } else {
+      goToMenu();
+    }
+  };
+
   return (
     <>
       {/* Playfield / Canvas */}
@@ -24,7 +44,7 @@ export function ControlsHelp({ actions }: ControlsHelpProps) {
       {/* Header / Top Bar for modal */}
       <header className="flex items-center justify-between p-gutter border-b border-[#334155] bg-[#0e150e]">
       <h1 className="font-hud-lg text-hud-lg text-primary tracking-tighter uppercase">SYSTEM_MANUAL</h1>
-      <button className="h-touch-target w-touch-target flex items-center justify-center bg-[#111827] border border-[#334155] text-on-surface hover:border-primary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded" type="button" data-action-id="button-1-1" onClick={actions?.["button-1-1"]}>
+      <button aria-label="Close" className="h-touch-target w-touch-target flex items-center justify-center bg-[#111827] border border-[#334155] text-on-surface hover:border-primary hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded cursor-pointer" type="button" data-action-id="button-1-1" onClick={handleClose}>
       <X  data-icon="close" aria-hidden={true} focusable="false" />
       </button>
       </header>
@@ -104,7 +124,7 @@ export function ControlsHelp({ actions }: ControlsHelpProps) {
       </div>
       {/* Footer Action */}
       <footer className="p-gutter border-t border-[#334155] flex justify-end bg-[#0e150e]">
-      <button className="h-touch-target px-margin-desktop bg-[#111827] border border-[#334155] text-on-surface hover:border-primary hover:text-primary hover:shadow-[0_0_10px_rgba(34,197,94,0.3)] transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded font-label-bold uppercase" type="button" data-action-id="acknowledge-2" onClick={actions?.["acknowledge-2"]}>
+      <button className="h-touch-target px-margin-desktop bg-[#111827] border border-[#334155] text-on-surface hover:border-primary hover:text-primary hover:shadow-[0_0_10px_rgba(34,197,94,0.3)] transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded font-label-bold uppercase cursor-pointer" type="button" data-action-id="acknowledge-2" onClick={handleAcknowledge}>
                       ACKNOWLEDGE
                   </button>
       </footer>
