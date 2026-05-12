@@ -1,6 +1,6 @@
 // AUTO-GENERATED from Stitch — DO NOT modify layout or CSS
 // Screen: Pause Overlay
-// 
+//
 // AGENT INSTRUCTIONS:
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
@@ -56,7 +56,7 @@ export function PauseOverlay({ actions }: PauseOverlayProps) {
 
   return (
     <>
-      {/* Mock Background Game State */}
+      {/* Paused game background visual */}
       <div className="absolute inset-0 z-0 bg-surface-container-lowest opacity-40 blur-sm pointer-events-none flex flex-col justify-center items-center gap-4">
       <div className="w-64 h-16 bg-surface border border-outline-variant rounded flex justify-center items-center">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">GAME ENTITY</span>

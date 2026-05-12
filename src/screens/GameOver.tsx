@@ -1,6 +1,6 @@
 // AUTO-GENERATED from Stitch — DO NOT modify layout or CSS
 // Screen: Game Over
-// 
+//
 // AGENT INSTRUCTIONS:
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
