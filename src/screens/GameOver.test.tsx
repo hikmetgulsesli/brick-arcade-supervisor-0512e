@@ -25,19 +25,22 @@ describe('GameOver', () => {
   it('displays final score from context', () => {
     render(<GameOver />, { wrapper: Wrapper });
     expect(screen.getByText('FINAL SCORE')).toBeInTheDocument();
-    expect(screen.getByText('0')).toBeInTheDocument();
+    const scoreSection = screen.getByText('FINAL SCORE').parentElement;
+    expect(scoreSection?.textContent).toContain('0');
   });
 
   it('displays level from context', () => {
     render(<GameOver />, { wrapper: Wrapper });
     expect(screen.getByText('LEVEL')).toBeInTheDocument();
-    expect(screen.getByText('1')).toBeInTheDocument();
+    const levelSection = screen.getByText('LEVEL').parentElement;
+    expect(levelSection?.textContent).toContain('1');
   });
 
   it('displays bricks destroyed from context', () => {
     render(<GameOver />, { wrapper: Wrapper });
     expect(screen.getByText('BRICKS')).toBeInTheDocument();
-    expect(screen.getByText('0')).toBeInTheDocument();
+    const bricksSection = screen.getByText('BRICKS').parentElement;
+    expect(bricksSection?.textContent).toContain('0');
   });
 
   it('displays play time from context', () => {
