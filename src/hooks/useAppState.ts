@@ -127,13 +127,13 @@ function circleRectCollision(
 
 export function useAppState() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [mode, setMode] = useState<GameMode>('menu');
+  const [mode, setMode] = useState<GameMode>('playing');
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
   const [highScore, setHighScore] = useState(getHighScore());
   const [bricksDestroyed, setBricksDestroyed] = useState(0);
-  const [playTimeMs, setPlayTimeMs] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
 
   const ballRef = useRef<Ball>({
     x: 0, y: 0, dx: 0, dy: 0, radius: 8, speed: 0,
@@ -144,10 +144,9 @@ export function useAppState() {
   const bricksRef = useRef<Brick[]>([]);
   const keysRef = useRef<Record<string, boolean>>({});
   const playTimeRef = useRef(0);
-  const animFrameRef = useRef(0);
   const launchedRef = useRef(false);
   const touchXRef = useRef<number | null>(null);
-  const needsInitRef = useRef(false);
+  const needsInitRef = useRef(true);
   const updateRef = useRef<(dt: number) => void>(() => {});
   const renderRef = useRef<() => void>(() => {});
 
@@ -182,9 +181,9 @@ export function useAppState() {
     setLives(3);
     setLevel(1);
     setBricksDestroyed(0);
-    setPlayTimeMs(0);
     playTimeRef.current = 0;
     needsInitRef.current = true;
+    setResetKey((k) => k + 1);
     setMode('playing');
   }, []);
 
@@ -202,9 +201,9 @@ export function useAppState() {
     setLives(3);
     setLevel(1);
     setBricksDestroyed(0);
-    setPlayTimeMs(0);
     playTimeRef.current = 0;
     needsInitRef.current = true;
+    setResetKey((k) => k + 1);
     setMode('playing');
   }, []);
 
@@ -230,7 +229,8 @@ export function useAppState() {
     const canvasH = canvas.height;
 
     playTimeRef.current += dt * 1000;
-    setPlayTimeMs(Math.floor(playTimeRef.current));
+    // @ts-ignore
+    if (window.app) window.app.playTimeMs = Math.floor(playTimeRef.current);
 
     const ball = ballRef.current;
     const paddle = paddleRef.current;
@@ -493,7 +493,7 @@ export function useAppState() {
     }
     tryInit();
     return () => cancelAnimationFrame(raf);
-  }, [mode, level, initLevel]);
+  }, [mode, level, initLevel, resetKey]);
 
   // Keyboard input
   useEffect(() => {
@@ -605,7 +605,7 @@ export function useAppState() {
       level,
       highScore,
       bricksDestroyed,
-      playTimeMs,
+      playTimeMs: playTimeRef.current,
       ball: ballRef.current,
       paddle: paddleRef.current,
       bricks: bricksRef.current,
@@ -614,7 +614,7 @@ export function useAppState() {
     window.app = app;
     // @ts-ignore
     globalThis.app = app;
-  }, [mode, score, lives, level, highScore, bricksDestroyed, playTimeMs]);
+  }, [mode, score, lives, level, highScore, bricksDestroyed]);
 
   useEffect(() => {
     // @ts-ignore
@@ -626,7 +626,7 @@ export function useAppState() {
         level,
         highScore,
         bricksDestroyed,
-        playTimeMs,
+        playTimeMs: Math.floor(playTimeRef.current),
         ball: { x: ballRef.current.x, y: ballRef.current.y, dx: ballRef.current.dx, dy: ballRef.current.dy },
         paddle: { x: paddleRef.current.x, y: paddleRef.current.y },
         bricksAlive: bricksRef.current.filter((b) => b.health > 0).length,
@@ -642,7 +642,7 @@ export function useAppState() {
       }
       renderRef.current();
     };
-  }, [mode, score, lives, level, highScore, bricksDestroyed, playTimeMs]);
+  }, [mode, score, lives, level, highScore, bricksDestroyed]);
 
   const actions: ScreenActions = {
     'start-game-1': startGame,
@@ -677,7 +677,7 @@ export function useAppState() {
     level,
     highScore,
     bricksDestroyed,
-    playTimeMs,
+    playTimeMs: playTimeRef.current,
     canvasRef,
     actions,
     startGame,

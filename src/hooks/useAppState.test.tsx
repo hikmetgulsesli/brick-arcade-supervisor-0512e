@@ -10,12 +10,12 @@ beforeEach(() => {
 });
 
 describe('useAppState', () => {
-  it('starts in menu mode', () => {
+  it('starts in playing mode', () => {
     const { result } = renderHook(() => useAppState());
-    expect(result.current.mode).toBe('menu');
+    expect(result.current.mode).toBe('playing');
   });
 
-  it('transitions from menu to playing on startGame', () => {
+  it('transitions to playing on startGame', () => {
     const { result } = renderHook(() => useAppState());
     act(() => {
       result.current.startGame();
@@ -28,9 +28,6 @@ describe('useAppState', () => {
 
   it('pauses and resumes game', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
-    expect(result.current.mode).toBe('playing');
-
     act(() => result.current.pauseGame());
     expect(result.current.mode).toBe('paused');
 
@@ -40,7 +37,6 @@ describe('useAppState', () => {
 
   it('restarts game', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
     act(() => result.current.restartGame());
     expect(result.current.mode).toBe('playing');
     expect(result.current.score).toBe(0);
@@ -49,7 +45,6 @@ describe('useAppState', () => {
 
   it('returns to menu', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
     act(() => result.current.goToMenu());
     expect(result.current.mode).toBe('menu');
   });
@@ -75,9 +70,8 @@ describe('useAppState', () => {
     expect(result.current.actions['acknowledge-2']).toBeDefined();
   });
 
-  it('exposes window.app after starting game', () => {
+  it('exposes window.app after mount', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
 
     const app = (window as unknown as Record<string, unknown>).app as Record<string, unknown>;
     expect(app).toBeDefined();
@@ -89,7 +83,6 @@ describe('useAppState', () => {
 
   it('exposes window.render_game_to_text', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
 
     const renderFn = (window as unknown as Record<string, unknown>).render_game_to_text as () => string;
     expect(renderFn).toBeDefined();
@@ -105,7 +98,6 @@ describe('useAppState', () => {
 
   it('exposes window.advanceTime', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
 
     const advanceFn = (window as unknown as Record<string, unknown>).advanceTime as (ms: number) => void;
     expect(advanceFn).toBeDefined();
@@ -116,6 +108,9 @@ describe('useAppState', () => {
   it('start-game-1 action starts the game', () => {
     const { result } = renderHook(() => useAppState());
     act(() => {
+      result.current.goToMenu();
+    });
+    act(() => {
       result.current.actions['start-game-1']?.();
     });
     expect(result.current.mode).toBe('playing');
@@ -123,7 +118,6 @@ describe('useAppState', () => {
 
   it('return-to-menu-3 action goes to menu', () => {
     const { result } = renderHook(() => useAppState());
-    act(() => result.current.startGame());
     act(() => {
       result.current.actions['return-to-menu-3']?.();
     });

@@ -12,22 +12,30 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 }
 
 describe('App', () => {
-  it('renders main menu initially', () => {
+  it('renders game board initially', () => {
     render(<App />, { wrapper: Wrapper });
-    expect(screen.getByText('START GAME')).toBeInTheDocument();
-    expect(screen.getByText(/BRICK ARCADE/)).toBeInTheDocument();
-    expect(screen.getByText(/SUPERVISOR/)).toBeInTheDocument();
+    expect(screen.getByText('SUPERVISOR_OS_V1')).toBeInTheDocument();
   });
 
-  it('switches to game board when start game is clicked', () => {
+  it('shows pause overlay when Escape is pressed', () => {
     render(<App />, { wrapper: Wrapper });
-    const startBtn = screen.getByText('START GAME');
-    fireEvent.click(startBtn);
-    expect(screen.getByText('SUPERVISOR_OS_V1')).toBeInTheDocument();
+    fireEvent.keyDown(window, { code: 'Escape' });
+    expect(screen.getByText('GAME PAUSED')).toBeInTheDocument();
+    expect(screen.getByText('RESUME')).toBeInTheDocument();
+  });
+
+  it('switches to main menu from pause overlay', () => {
+    render(<App />, { wrapper: Wrapper });
+    fireEvent.keyDown(window, { code: 'Escape' });
+    fireEvent.click(screen.getByText('RETURN TO MENU'));
+    expect(screen.getByText('START GAME')).toBeInTheDocument();
+    expect(screen.getByText(/BRICK ARCADE/)).toBeInTheDocument();
   });
 
   it('shows controls help when how to play is clicked', () => {
     render(<App />, { wrapper: Wrapper });
+    fireEvent.keyDown(window, { code: 'Escape' });
+    fireEvent.click(screen.getByText('RETURN TO MENU'));
     const helpBtn = screen.getByText('HOW TO PLAY');
     fireEvent.click(helpBtn);
     expect(screen.getByText('SYSTEM_MANUAL')).toBeInTheDocument();
@@ -35,6 +43,8 @@ describe('App', () => {
 
   it('returns to menu from controls', () => {
     render(<App />, { wrapper: Wrapper });
+    fireEvent.keyDown(window, { code: 'Escape' });
+    fireEvent.click(screen.getByText('RETURN TO MENU'));
     fireEvent.click(screen.getByText('HOW TO PLAY'));
     fireEvent.click(screen.getByText('ACKNOWLEDGE'));
     expect(screen.getByText('START GAME')).toBeInTheDocument();
