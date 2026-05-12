@@ -8,7 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, Play, Settings } from "lucide-react";
-
+import { useAppContext } from "../contexts/AppContext";
 
 export type MainMenuActionId = "start-game-1" | "how-to-play-2" | "settings-3";
 
@@ -16,7 +16,13 @@ export interface MainMenuProps {
   actions?: Partial<Record<MainMenuActionId, () => void>>;
 }
 
+function formatScore(n: number): string {
+  return n.toLocaleString("en-US", { minimumIntegerDigits: 1 });
+}
+
 export function MainMenu({ actions }: MainMenuProps) {
+  const { highScore } = useAppContext();
+
   return (
     <>
       {/* Playfield Area */}
@@ -58,7 +64,7 @@ export function MainMenu({ actions }: MainMenuProps) {
       {/* High Score HUD Chip */}
       <div className="border border-[#334155] bg-[#111827] px-3 py-2 flex flex-col items-start min-w-[120px]">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant uppercase mb-1">HIGH SCORE</span>
-      <span className="font-label-bold text-label-bold text-primary">09,482,100</span>
+      <span className="font-label-bold text-label-bold text-primary">{formatScore(highScore)}</span>
       </div>
       {/* Version Metadata */}
       <div className="text-right flex flex-col items-end opacity-70">

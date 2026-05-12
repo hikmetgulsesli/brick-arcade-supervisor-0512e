@@ -8,7 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { ArrowLeft, ArrowRight, Circle, Pause, Play, RefreshCw, Settings } from "lucide-react";
-
+import { useAppContext } from "../contexts/AppContext";
 
 export type GameBoardActionId = "button-1-1" | "button-2-2" | "button-3-3" | "button-4-4" | "button-5-5" | "button-6-6";
 
@@ -16,7 +16,20 @@ export interface GameBoardProps {
   actions?: Partial<Record<GameBoardActionId, () => void>>;
 }
 
+function padScore(n: number): string {
+  return String(n).padStart(5, "0");
+}
+
+function padLevel(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
 export function GameBoard({ actions }: GameBoardProps) {
+  const { score, lives, level } = useAppContext();
+
+  const filledLives = Math.max(0, Math.min(lives, 3));
+  const emptyLives = 3 - filledLives;
+
   return (
     <>
       {/* SideNavBar (Desktop Only) */}
@@ -51,10 +64,10 @@ export function GameBoard({ actions }: GameBoardProps) {
       <header className="fixed top-0 left-0 md:left-64 right-0 z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-touch-target bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant">
       <div className="font-hud-lg text-hud-lg font-black text-primary dark:text-primary uppercase tracking-tighter">SUPERVISOR_OS_V1</div>
       <div className="flex items-center gap-gutter">
-      <button className="text-on-surface-variant hover:border-primary transition-colors duration-200 h-touch-target w-touch-target flex items-center justify-center rounded border border-transparent" type="button" data-action-id="button-1-1" onClick={actions?.["button-1-1"]}>
+      <button aria-label="Settings" className="text-on-surface-variant hover:border-primary transition-colors duration-200 h-touch-target w-touch-target flex items-center justify-center rounded border border-transparent" type="button" data-action-id="button-1-1" onClick={actions?.["button-1-1"]}>
       <Settings aria-hidden={true} focusable="false" />
       </button>
-      <button className="text-on-surface-variant hover:border-primary transition-colors duration-200 h-touch-target w-touch-target flex items-center justify-center rounded border border-transparent" type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
+      <button aria-label="Profile" className="text-on-surface-variant hover:border-primary transition-colors duration-200 h-touch-target w-touch-target flex items-center justify-center rounded border border-transparent" type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
       <Circle aria-hidden={true} focusable="false" />
       </button>
       </div>
@@ -68,18 +81,21 @@ export function GameBoard({ actions }: GameBoardProps) {
       <div className="flex gap-gutter">
       <div className="border border-[#334155] bg-[#111827] px-3 py-1 flex items-center gap-2">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">SCORE</span>
-      <span className="font-hud-sm text-hud-sm text-primary">02450</span>
+      <span className="font-hud-sm text-hud-sm text-primary">{padScore(score)}</span>
       </div>
       <div className="border border-[#334155] bg-[#111827] px-3 py-1 flex items-center gap-2">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant">LVL</span>
-      <span className="font-hud-sm text-hud-sm text-inverse-surface">04</span>
+      <span className="font-hud-sm text-hud-sm text-inverse-surface">{padLevel(level)}</span>
       </div>
       </div>
       <div className="flex gap-unit">
       {/* Lives */}
-      <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-[18px]" aria-hidden={true} focusable="false" />
-      <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-[18px]" aria-hidden={true} focusable="false" />
-      <Circle className="text-outline-variant text-[18px]" aria-hidden={true} focusable="false" />
+      {Array.from({ length: filledLives }).map((_, i) => (
+        <Circle key={`live-${i}`} style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-[18px]" aria-hidden={true} focusable="false" />
+      ))}
+      {Array.from({ length: emptyLives }).map((_, i) => (
+        <Circle key={`empty-${i}`} className="text-outline-variant text-[18px]" aria-hidden={true} focusable="false" />
+      ))}
       </div>
       </div>
       {/* Bricks Grid */}
@@ -118,20 +134,20 @@ export function GameBoard({ actions }: GameBoardProps) {
       <div className="absolute bottom-6 left-[40%] w-[20%] h-4 bg-primary glow-paddle rounded-sm z-20"></div>
       {/* Quick Controls (Overlay bottom right) */}
       <div className="absolute bottom-4 right-4 flex gap-unit z-30">
-      <button className="h-10 w-10 bg-[#111827] border border-[#334155] text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
+      <button aria-label="Pause game" className="h-10 w-10 bg-[#111827] border border-[#334155] text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
       <Pause className="text-[20px]" aria-hidden={true} focusable="false" />
       </button>
-      <button className="h-10 w-10 bg-[#111827] border border-[#334155] text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-4-4" onClick={actions?.["button-4-4"]}>
+      <button aria-label="Restart game" className="h-10 w-10 bg-[#111827] border border-[#334155] text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-4-4" onClick={actions?.["button-4-4"]}>
       <RefreshCw className="text-[20px]" aria-hidden={true} focusable="false" />
       </button>
       </div>
       </div>
       {/* Mobile Touch Controls (Visible only on small screens) */}
       <div className="mt-margin-mobile flex w-full max-w-md justify-between md:hidden gap-gutter">
-      <button className="flex-1 h-14 bg-[#111827] border border-[#334155] active:border-primary active:text-primary flex items-center justify-center rounded transition-colors focus:border-primary focus:outline-none" type="button" data-action-id="button-5-5" onClick={actions?.["button-5-5"]}>
+      <button aria-label="Move left" className="flex-1 h-14 bg-[#111827] border border-[#334155] active:border-primary active:text-primary flex items-center justify-center rounded transition-colors focus:border-primary focus:outline-none" type="button" data-action-id="button-5-5" onClick={actions?.["button-5-5"]}>
       <ArrowLeft className="text-[32px]" aria-hidden={true} focusable="false" />
       </button>
-      <button className="flex-1 h-14 bg-[#111827] border border-[#334155] active:border-primary active:text-primary flex items-center justify-center rounded transition-colors focus:border-primary focus:outline-none" type="button" data-action-id="button-6-6" onClick={actions?.["button-6-6"]}>
+      <button aria-label="Move right" className="flex-1 h-14 bg-[#111827] border border-[#334155] active:border-primary active:text-primary flex items-center justify-center rounded transition-colors focus:border-primary focus:outline-none" type="button" data-action-id="button-6-6" onClick={actions?.["button-6-6"]}>
       <ArrowRight className="text-[32px]" aria-hidden={true} focusable="false" />
       </button>
       </div>
