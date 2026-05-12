@@ -7,7 +7,7 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
-import { ArrowLeft, ArrowRight, Circle, Pause, Play, RefreshCw, Settings } from "lucide-react";
+import { ArrowLeft, ArrowRight, Circle, HelpCircle, Pause, Play, RefreshCw, Settings } from "lucide-react";
 import { useAppContext } from "../contexts/AppContext";
 
 export type GameBoardActionId = "button-1-1" | "button-2-2" | "button-3-3" | "button-4-4" | "button-5-5" | "button-6-6";
@@ -34,10 +34,10 @@ export function GameBoard({ actions }: GameBoardProps) {
     <>
       {/* SideNavBar (Desktop Only) */}
       <nav className="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 z-40 bg-surface-container dark:bg-surface-container border-r border-outline-variant">
-      <div className="p-margin-desktop border-b border-outline-variant">
+      <button className="p-margin-desktop border-b border-outline-variant text-left w-full cursor-pointer hover:bg-surface-variant transition-colors" type="button" onClick={() => goToMenu()}>
       <h1 className="font-hud-lg text-hud-lg text-primary tracking-tighter">CONSOLE</h1>
       <p className="font-hud-sm text-hud-sm text-on-surface-variant mt-2">ARCADE_PROT_04</p>
-      </div>
+      </button>
       <div className="flex-1 py-margin-desktop flex flex-col gap-unit">
       {/* Active Tab: DASHBOARD (Since this is the main game board) */}
       <a className="flex items-center px-margin-desktop h-touch-target text-primary border-r-2 border-primary bg-surface-container-highest font-label-bold text-label-bold uppercase translate-x-1 transition-transform" aria-disabled="true" tabIndex={-1}>
@@ -68,7 +68,7 @@ export function GameBoard({ actions }: GameBoardProps) {
       <Settings aria-hidden={true} focusable="false" />
       </button>
       <button aria-label="Profile" className="text-on-surface-variant hover:border-primary transition-colors duration-200 h-touch-target w-touch-target flex items-center justify-center rounded border border-transparent" type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
-      <Circle aria-hidden={true} focusable="false" />
+      <HelpCircle aria-hidden={true} focusable="false" />
       </button>
       </div>
       </header>

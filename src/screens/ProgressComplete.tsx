@@ -7,7 +7,7 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
-import { ArrowRight, Circle } from "lucide-react";
+import { ArrowRight, Circle, RotateCcw } from "lucide-react";
 import { useAppContext } from "../contexts/AppContext";
 
 export type ProgressCompleteActionId = "restart-1" | "next-level-2" | "return-to-menu-3";
@@ -56,7 +56,7 @@ export function ProgressComplete({ actions }: ProgressCompleteProps) {
       </div>
       <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
       <button className="h-touch-target px-8 bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold hover:border-primary transition-colors duration-200 uppercase flex items-center justify-center gap-2" type="button" data-action-id="restart-1" onClick={actions?.["restart-1"]}>
-      <Circle className="text-[18px]" aria-hidden={true} focusable="false" />
+      <RotateCcw className="text-[18px]" aria-hidden={true} focusable="false" />
                           Restart
                       </button>
       <button className="h-touch-target px-8 bg-surface border-2 border-primary text-primary font-label-bold text-label-bold hover:bg-primary hover:text-surface transition-colors duration-200 uppercase neon-glow flex items-center justify-center gap-2" type="button" data-action-id="next-level-2" onClick={actions?.["next-level-2"]}>
