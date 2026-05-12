@@ -8,7 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, Play } from "lucide-react";
-
+import { useAppContext } from "../contexts/AppContext";
 
 export type PauseOverlayActionId = "resume-1" | "restart-2" | "return-to-menu-3";
 
@@ -16,7 +16,44 @@ export interface PauseOverlayProps {
   actions?: Partial<Record<PauseOverlayActionId, () => void>>;
 }
 
+function formatNumber(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
+function formatLevel(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
 export function PauseOverlay({ actions }: PauseOverlayProps) {
+  const { score, level, resumeGame, restartGame, goToMenu } = useAppContext();
+
+  const handleResume = () => {
+    const action = actions?.["resume-1"];
+    if (action) {
+      action();
+    } else {
+      resumeGame();
+    }
+  };
+
+  const handleRestart = () => {
+    const action = actions?.["restart-2"];
+    if (action) {
+      action();
+    } else {
+      restartGame();
+    }
+  };
+
+  const handleReturnToMenu = () => {
+    const action = actions?.["return-to-menu-3"];
+    if (action) {
+      action();
+    } else {
+      goToMenu();
+    }
+  };
+
   return (
     <>
       {/* Mock Background Game State */}
@@ -46,17 +83,17 @@ export function PauseOverlay({ actions }: PauseOverlayProps) {
       {/* Action Buttons */}
       <div className="flex flex-col w-full gap-4 mt-8">
       {/* Primary Action: Resume */}
-      <button className="h-touch-target w-full bg-primary-container/20 border-2 border-primary text-primary font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:bg-primary-container/30 hover:shadow-[0_0_12px_rgba(75,226,119,0.6)] transition-colors duration-200 outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-dim group" type="button" data-action-id="resume-1" onClick={actions?.["resume-1"]}>
+      <button className="h-touch-target w-full bg-primary-container/20 border-2 border-primary text-primary font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:bg-primary-container/30 hover:shadow-[0_0_12px_rgba(75,226,119,0.6)] transition-colors duration-200 outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-dim group cursor-pointer" type="button" data-action-id="resume-1" onClick={handleResume}>
       <Play className="group-hover:scale-110 transition-transform" aria-hidden={true} focusable="false" />
                           RESUME
                       </button>
       {/* Secondary Action: Restart */}
-      <button className="h-touch-target w-full bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-colors duration-200 outline-none focus:border-primary focus:text-primary" type="button" data-action-id="restart-2" onClick={actions?.["restart-2"]}>
+      <button className="h-touch-target w-full bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-colors duration-200 outline-none focus:border-primary focus:text-primary cursor-pointer" type="button" data-action-id="restart-2" onClick={handleRestart}>
       <Circle aria-hidden={true} focusable="false" />
                           RESTART
                       </button>
       {/* Secondary Action: Return to Menu */}
-      <button className="h-touch-target w-full bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:border-error hover:text-error transition-colors duration-200 outline-none focus:border-error focus:text-error mt-4" type="button" data-action-id="return-to-menu-3" onClick={actions?.["return-to-menu-3"]}>
+      <button className="h-touch-target w-full bg-surface border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase flex items-center justify-center gap-2 hover:border-error hover:text-error transition-colors duration-200 outline-none focus:border-error focus:text-error mt-4 cursor-pointer" type="button" data-action-id="return-to-menu-3" onClick={handleReturnToMenu}>
       <Circle aria-hidden={true} focusable="false" />
                           RETURN TO MENU
                       </button>
@@ -65,11 +102,11 @@ export function PauseOverlay({ actions }: PauseOverlayProps) {
       <div className="flex gap-4 mt-8 border-t border-outline-variant pt-8 w-full justify-center">
       <div className="flex flex-col items-center justify-center border border-outline-variant bg-surface px-4 py-2 rounded-sm min-w-[80px]">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant mb-1">SCORE</span>
-      <span className="font-label-bold text-label-bold text-primary">12,450</span>
+      <span className="font-label-bold text-label-bold text-primary">{formatNumber(score)}</span>
       </div>
       <div className="flex flex-col items-center justify-center border border-outline-variant bg-surface px-4 py-2 rounded-sm min-w-[80px]">
       <span className="font-hud-sm text-hud-sm text-on-surface-variant mb-1">LEVEL</span>
-      <span className="font-label-bold text-label-bold text-secondary">04</span>
+      <span className="font-label-bold text-label-bold text-secondary">{formatLevel(level)}</span>
       </div>
       </div>
       </div>

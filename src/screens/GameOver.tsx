@@ -8,7 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, Menu, TriangleAlert } from "lucide-react";
-
+import { useAppContext } from "../contexts/AppContext";
 
 export type GameOverActionId = "play-again-1" | "main-menu-2";
 
@@ -16,7 +16,38 @@ export interface GameOverProps {
   actions?: Partial<Record<GameOverActionId, () => void>>;
 }
 
+function formatNumber(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
+function formatTime(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
 export function GameOver({ actions }: GameOverProps) {
+  const { score, level, bricksDestroyed, playTimeMs, startGame, goToMenu } = useAppContext();
+
+  const handlePlayAgain = () => {
+    const action = actions?.["play-again-1"];
+    if (action) {
+      action();
+    } else {
+      startGame();
+    }
+  };
+
+  const handleMainMenu = () => {
+    const action = actions?.["main-menu-2"];
+    if (action) {
+      action();
+    } else {
+      goToMenu();
+    }
+  };
+
   return (
     <>
       {/* Background Tonal Layering */}
@@ -45,37 +76,37 @@ export function GameOver({ actions }: GameOverProps) {
       <div className="col-span-2 md:col-span-3 bg-surface-container border border-outline-variant rounded flex flex-col items-center justify-center p-6 gap-2">
       <div className="font-hud-sm text-hud-sm text-on-surface-variant uppercase">FINAL SCORE</div>
       <div className="font-hud-lg text-hud-lg md:text-[48px] text-primary" style={{textShadow: "0 0 8px rgba(75, 226, 119, 0.3)"}}>
-                042,980
+                {formatNumber(score)}
               </div>
       </div>
       {/* Level Reached */}
       <div className="col-span-1 bg-surface-container border border-outline-variant rounded flex flex-col items-center justify-center p-4 gap-2">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-secondary text-[24px]" aria-hidden={true} focusable="false" />
       <div className="font-hud-sm text-hud-sm text-on-surface-variant uppercase text-center">LEVEL</div>
-      <div className="font-label-bold text-label-bold text-on-surface text-xl">12</div>
+      <div className="font-label-bold text-label-bold text-on-surface text-xl">{level}</div>
       </div>
       {/* Bricks Destroyed */}
       <div className="col-span-1 bg-surface-container border border-outline-variant rounded flex flex-col items-center justify-center p-4 gap-2">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-[24px]" aria-hidden={true} focusable="false" />
       <div className="font-hud-sm text-hud-sm text-on-surface-variant uppercase text-center">BRICKS</div>
-      <div className="font-label-bold text-label-bold text-on-surface text-xl">342</div>
+      <div className="font-label-bold text-label-bold text-on-surface text-xl">{bricksDestroyed}</div>
       </div>
       {/* Playtime (Desktop Only for asymmetry) */}
       <div className="hidden md:flex col-span-1 bg-surface-container border border-outline-variant rounded flex-col items-center justify-center p-4 gap-2">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-tertiary text-[24px]" aria-hidden={true} focusable="false" />
       <div className="font-hud-sm text-hud-sm text-on-surface-variant uppercase text-center">TIME</div>
-      <div className="font-label-bold text-label-bold text-on-surface text-xl">08:45</div>
+      <div className="font-label-bold text-label-bold text-on-surface text-xl">{formatTime(playTimeMs)}</div>
       </div>
       </div>
       {/* Actions */}
       <div className="w-full flex flex-col md:flex-row gap-4 mt-8">
       {/* Primary Action */}
-      <button className="flex-1 h-touch-target bg-surface-container border border-primary text-primary font-label-bold text-label-bold uppercase rounded flex items-center justify-center gap-2 hover:bg-primary-container/10 focus:outline-none focus:border-2 focus:border-primary transition-colors shadow-[0_0_8px_rgba(75,226,119,0.2)]" type="button" data-action-id="play-again-1" onClick={actions?.["play-again-1"]}>
+      <button className="flex-1 h-touch-target bg-surface-container border border-primary text-primary font-label-bold text-label-bold uppercase rounded flex items-center justify-center gap-2 hover:bg-primary-container/10 focus:outline-none focus:border-2 focus:border-primary transition-colors shadow-[0_0_8px_rgba(75,226,119,0.2)] cursor-pointer" type="button" data-action-id="play-again-1" onClick={handlePlayAgain}>
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} aria-hidden={true} focusable="false" />
               PLAY AGAIN
             </button>
       {/* Secondary Action */}
-      <button className="flex-1 h-touch-target bg-surface-container border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase rounded flex items-center justify-center gap-2 hover:border-primary hover:text-primary focus:outline-none focus:border-2 focus:border-primary transition-colors" type="button" data-action-id="main-menu-2" onClick={actions?.["main-menu-2"]}>
+      <button className="flex-1 h-touch-target bg-surface-container border border-outline-variant text-on-surface font-label-bold text-label-bold uppercase rounded flex items-center justify-center gap-2 hover:border-primary hover:text-primary focus:outline-none focus:border-2 focus:border-primary transition-colors cursor-pointer" type="button" data-action-id="main-menu-2" onClick={handleMainMenu}>
       <Menu aria-hidden={true} focusable="false" />
               MAIN MENU
             </button>
