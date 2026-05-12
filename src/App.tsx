@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useAppState } from './hooks/useAppState';
+import { useAppContext } from './contexts/AppContext';
 import {
   MainMenu,
   GameBoard,
@@ -19,7 +19,7 @@ export default function App() {
     level,
     canvasRef,
     actions,
-  } = useAppState();
+  } = useAppContext();
 
   const gameWrapperRef = useRef<HTMLDivElement>(null);
 

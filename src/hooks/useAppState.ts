@@ -147,6 +147,9 @@ export function useAppState() {
   const animFrameRef = useRef(0);
   const launchedRef = useRef(false);
   const touchXRef = useRef<number | null>(null);
+  const needsInitRef = useRef(false);
+  const updateRef = useRef<(dt: number) => void>(() => {});
+  const renderRef = useRef<() => void>(() => {});
 
   const initLevel = useCallback((lvl: number, canvasW: number, canvasH: number) => {
     const config = LEVELS[Math.min(lvl - 1, LEVELS.length - 1)];
@@ -181,6 +184,7 @@ export function useAppState() {
     setBricksDestroyed(0);
     setPlayTimeMs(0);
     playTimeRef.current = 0;
+    needsInitRef.current = true;
     setMode('playing');
   }, []);
 
@@ -189,6 +193,7 @@ export function useAppState() {
   }, []);
 
   const resumeGame = useCallback(() => {
+    needsInitRef.current = false;
     setMode('playing');
   }, []);
 
@@ -199,6 +204,7 @@ export function useAppState() {
     setBricksDestroyed(0);
     setPlayTimeMs(0);
     playTimeRef.current = 0;
+    needsInitRef.current = true;
     setMode('playing');
   }, []);
 
@@ -213,6 +219,7 @@ export function useAppState() {
   const nextLevel = useCallback(() => {
     const nextLvl = level + 1;
     setLevel(nextLvl);
+    needsInitRef.current = true;
     setMode('playing');
   }, [level]);
 
@@ -438,6 +445,14 @@ export function useAppState() {
     }
   }, [mode, score, lives, level]);
 
+  // Stabilize callbacks so the game loop identity stays constant
+  useEffect(() => {
+    updateRef.current = update;
+  });
+  useEffect(() => {
+    renderRef.current = render;
+  });
+
   // Game loop
   useEffect(() => {
     if (mode !== 'playing' && mode !== 'paused') return;
@@ -451,22 +466,33 @@ export function useAppState() {
       lastTime = timestamp;
 
       if (mode === 'playing') {
-        update(dt);
+        updateRef.current(dt);
       }
-      render();
+      renderRef.current();
       animId = requestAnimationFrame(loop);
     }
 
     animId = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(animId);
-  }, [mode, update, render]);
+  }, [mode]);
 
   // Initialize level when entering playing mode or level changes
   useEffect(() => {
     if (mode !== 'playing') return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    initLevel(level, canvas.width, canvas.height);
+    if (!needsInitRef.current) return;
+
+    let raf = 0;
+    function tryInit() {
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        raf = requestAnimationFrame(tryInit);
+        return;
+      }
+      initLevel(level, canvas.width, canvas.height);
+      needsInitRef.current = false;
+    }
+    tryInit();
+    return () => cancelAnimationFrame(raf);
   }, [mode, level, initLevel]);
 
   // Keyboard input
@@ -612,11 +638,11 @@ export function useAppState() {
     window.advanceTime = (ms: number) => {
       const steps = Math.max(1, Math.round(ms / (1000 / 60)));
       for (let i = 0; i < steps; i++) {
-        update(1 / 60);
+        updateRef.current(1 / 60);
       }
-      render();
+      renderRef.current();
     };
-  }, [mode, score, lives, level, highScore, bricksDestroyed, playTimeMs, update, render]);
+  }, [mode, score, lives, level, highScore, bricksDestroyed, playTimeMs]);
 
   const actions: ScreenActions = {
     'start-game-1': startGame,
