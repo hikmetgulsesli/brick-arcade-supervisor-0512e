@@ -1,0 +1,379 @@
+[
+  {
+    "screenId": "eb2be56fae924d44a7709ab003d6c8f0",
+    "screenTitle": "Pause Overlay",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "RESUME",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "RESTART",
+        "line": 135
+      },
+      {
+        "type": "button",
+        "label": "RETURN TO MENU",
+        "line": 140
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "RESUME",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "RESTART",
+        "line": 135
+      },
+      {
+        "type": "button",
+        "label": "RETURN TO MENU",
+        "line": 140
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 3,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  },
+  {
+    "screenId": "528d74a9d16746618d1356ac230a85cd",
+    "screenTitle": "Progress Complete",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "Restart",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "Next Level",
+        "line": 134
+      },
+      {
+        "type": "button",
+        "label": "Return to Menu",
+        "line": 140
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "Restart",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "Next Level",
+        "line": 134
+      },
+      {
+        "type": "button",
+        "label": "Return to Menu",
+        "line": 140
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 3,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  },
+  {
+    "screenId": "bf12c1a949b94adeb92910df9a1b55c2",
+    "screenTitle": "Game Board",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "link",
+        "label": "DASHBOARD",
+        "href": "#",
+        "line": 156
+      },
+      {
+        "type": "link",
+        "label": "MODIFIERS",
+        "href": "#",
+        "line": 160
+      },
+      {
+        "type": "link",
+        "label": "ANALYTICS",
+        "href": "#",
+        "line": 164
+      },
+      {
+        "type": "link",
+        "label": "LOGS",
+        "href": "#",
+        "line": 168
+      },
+      {
+        "type": "link",
+        "label": "PLAY",
+        "href": "#",
+        "line": 269
+      },
+      {
+        "type": "link",
+        "label": "GEAR",
+        "href": "#",
+        "line": 273
+      },
+      {
+        "type": "link",
+        "label": "STATS",
+        "href": "#",
+        "line": 277
+      },
+      {
+        "type": "link",
+        "label": "EXIT",
+        "href": "#",
+        "line": 281
+      },
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 180
+      },
+      {
+        "type": "button",
+        "label": "help_outline",
+        "line": 183
+      },
+      {
+        "type": "button",
+        "label": "pause",
+        "line": 247
+      },
+      {
+        "type": "button",
+        "label": "refresh",
+        "line": 250
+      },
+      {
+        "type": "button",
+        "label": "arrow_left",
+        "line": 257
+      },
+      {
+        "type": "button",
+        "label": "arrow_right",
+        "line": 260
+      }
+    ],
+    "navigation": [
+      {
+        "type": "link",
+        "label": "DASHBOARD",
+        "href": "#",
+        "line": 156
+      },
+      {
+        "type": "link",
+        "label": "MODIFIERS",
+        "href": "#",
+        "line": 160
+      },
+      {
+        "type": "link",
+        "label": "ANALYTICS",
+        "href": "#",
+        "line": 164
+      },
+      {
+        "type": "link",
+        "label": "LOGS",
+        "href": "#",
+        "line": 168
+      },
+      {
+        "type": "link",
+        "label": "PLAY",
+        "href": "#",
+        "line": 269
+      },
+      {
+        "type": "link",
+        "label": "GEAR",
+        "href": "#",
+        "line": 273
+      },
+      {
+        "type": "link",
+        "label": "STATS",
+        "href": "#",
+        "line": 277
+      },
+      {
+        "type": "link",
+        "label": "EXIT",
+        "href": "#",
+        "line": 281
+      }
+    ],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 180
+      },
+      {
+        "type": "button",
+        "label": "help_outline",
+        "line": 183
+      },
+      {
+        "type": "button",
+        "label": "pause",
+        "line": 247
+      },
+      {
+        "type": "button",
+        "label": "refresh",
+        "line": 250
+      },
+      {
+        "type": "button",
+        "label": "arrow_left",
+        "line": 257
+      },
+      {
+        "type": "button",
+        "label": "arrow_right",
+        "line": 260
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 14,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  },
+  {
+    "screenId": "599f4f53710f4f248d962addf6c80c2b",
+    "screenTitle": "Controls Help",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "close",
+        "line": 101
+      },
+      {
+        "type": "button",
+        "label": "ACKNOWLEDGE",
+        "line": 181
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "close",
+        "line": 101
+      },
+      {
+        "type": "button",
+        "label": "ACKNOWLEDGE",
+        "line": 181
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 2,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  },
+  {
+    "screenId": "9156b44570d444ff88aedbf2d3754705",
+    "screenTitle": "Game Over",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "PLAY AGAIN",
+        "line": 198
+      },
+      {
+        "type": "button",
+        "label": "MAIN",
+        "line": 203
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "PLAY AGAIN",
+        "line": 198
+      },
+      {
+        "type": "button",
+        "label": "MAIN",
+        "line": 203
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 2,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  },
+  {
+    "screenId": "4c63dc351d374e46847273e9ef9d5908",
+    "screenTitle": "Main Menu",
+    "deviceType": "DESKTOP",
+    "elements": [
+      {
+        "type": "button",
+        "label": "START GAME",
+        "line": 124
+      },
+      {
+        "type": "button",
+        "label": "HOW TO PLAY",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 135
+      }
+    ],
+    "navigation": [],
+    "buttons": [
+      {
+        "type": "button",
+        "label": "START GAME",
+        "line": 124
+      },
+      {
+        "type": "button",
+        "label": "HOW TO PLAY",
+        "line": 130
+      },
+      {
+        "type": "button",
+        "label": "settings",
+        "line": 135
+      }
+    ],
+    "inputs": [],
+    "hardcodedData": [],
+    "totalInteractive": 3,
+    "requiresRouter": false,
+    "requiresDragDrop": false
+  }
+]
