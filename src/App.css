@@ -1,0 +1,45 @@
+/* Hide static game elements when canvas is active */
+.relative.overflow-hidden canvas {
+  display: block;
+}
+
+/* Ensure canvas overlays static bricks/ball/paddle but not quick controls */
+.relative.overflow-hidden .glow-ball,
+.relative.overflow-hidden .glow-paddle {
+  z-index: 20;
+}
+
+/* When canvas is present, hide static ball/paddle/bricks behind it */
+.relative.overflow-hidden:has(canvas) .glow-ball,
+.relative.overflow-hidden:has(canvas) .glow-paddle {
+  opacity: 0;
+}
+
+.relative.overflow-hidden:has(canvas) .grid-cols-8 {
+  opacity: 0;
+}
+
+/* Neon glow utility used by Stitch */
+.neon-glow {
+  box-shadow: 0 0 8px rgba(75, 226, 119, 0.4);
+}
+
+.glow-success {
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+
+.glow-warning {
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+}
+
+.glow-ball {
+  box-shadow: 0 0 8px rgba(220, 229, 217, 0.6);
+}
+
+.glow-paddle {
+  box-shadow: 0 0 10px rgba(75, 226, 119, 0.5);
+}
+
+.glow-primary {
+  box-shadow: 0 0 12px rgba(75, 226, 119, 0.4);
+}
