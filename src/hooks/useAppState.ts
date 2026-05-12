@@ -584,11 +584,15 @@ export function useAppState() {
       paddle: paddleRef.current,
       bricks: bricksRef.current,
     };
-    (window as unknown as Record<string, unknown>).app = app;
+    // @ts-ignore
+    window.app = app;
+    // @ts-ignore
+    globalThis.app = app;
   }, [mode, score, lives, level, highScore, bricksDestroyed, playTimeMs]);
 
   useEffect(() => {
-    (window as unknown as Record<string, unknown>).render_game_to_text = () => {
+    // @ts-ignore
+    window.render_game_to_text = () => {
       return JSON.stringify({
         mode,
         score,
@@ -604,7 +608,8 @@ export function useAppState() {
       });
     };
 
-    (window as unknown as Record<string, unknown>).advanceTime = (ms: number) => {
+    // @ts-ignore
+    window.advanceTime = (ms: number) => {
       const steps = Math.max(1, Math.round(ms / (1000 / 60)));
       for (let i = 0; i < steps; i++) {
         update(1 / 60);
