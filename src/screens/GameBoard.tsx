@@ -25,7 +25,7 @@ function padLevel(n: number): string {
 }
 
 export function GameBoard({ actions }: GameBoardProps) {
-  const { score, lives, level } = useAppContext();
+  const { score, lives, level, goToMenu } = useAppContext();
 
   const filledLives = Math.max(0, Math.min(lives, 3));
   const emptyLives = 3 - filledLives;
@@ -40,19 +40,19 @@ export function GameBoard({ actions }: GameBoardProps) {
       </div>
       <div className="flex-1 py-margin-desktop flex flex-col gap-unit">
       {/* Active Tab: DASHBOARD (Since this is the main game board) */}
-      <a className="flex items-center px-margin-desktop h-touch-target text-primary border-r-2 border-primary bg-surface-container-highest font-label-bold text-label-bold uppercase translate-x-1 transition-transform" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex items-center px-margin-desktop h-touch-target text-primary border-r-2 border-primary bg-surface-container-highest font-label-bold text-label-bold uppercase translate-x-1 transition-transform" aria-disabled="true" tabIndex={-1}>
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="mr-gutter" aria-hidden={true} focusable="false" />
                       DASHBOARD
                   </a>
-      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" aria-disabled="true" tabIndex={-1}>
       <Circle className="mr-gutter" aria-hidden={true} focusable="false" />
                       MODIFIERS
                   </a>
-      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" aria-disabled="true" tabIndex={-1}>
       <Circle className="mr-gutter" aria-hidden={true} focusable="false" />
                       ANALYTICS
                   </a>
-      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex items-center px-margin-desktop h-touch-target text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors font-label-bold text-label-bold uppercase" aria-disabled="true" tabIndex={-1}>
       <Circle className="mr-gutter" aria-hidden={true} focusable="false" />
                       LOGS
                   </a>
@@ -156,19 +156,19 @@ export function GameBoard({ actions }: GameBoardProps) {
       {/* BottomNavBar (Mobile Only) */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 h-16 md:hidden bg-surface-container-low dark:bg-surface-container-low border-t border-outline-variant">
       {/* Active Tab: PLAY (Matches game board intent) */}
-      <a className="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-xl p-unit min-w-[64px] scale-90 transition-transform font-hud-sm text-hud-sm uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-xl p-unit min-w-[64px] scale-90 transition-transform font-hud-sm text-hud-sm uppercase" aria-disabled="true" tabIndex={-1}>
       <Play  style={{fontVariationSettings: "'FILL' 1"}} className="mb-1" aria-hidden={true} focusable="false" />
                   PLAY
               </a>
-      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase" aria-disabled="true" tabIndex={-1}>
       <Circle className="mb-1" aria-hidden={true} focusable="false" />
                   GEAR
               </a>
-      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase" aria-disabled="true" tabIndex={-1}>
       <Circle className="mb-1" aria-hidden={true} focusable="false" />
                   STATS
               </a>
-      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase" href="#" aria-disabled="true" tabIndex={-1} onClick={(e) => e.preventDefault()}>
+      <a className="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:opacity-100 transition-opacity min-w-[64px] font-hud-sm text-hud-sm uppercase cursor-pointer" role="button" aria-label="Exit to menu" tabIndex={0} onClick={(e) => { e.preventDefault(); goToMenu(); }}>
       <Circle className="mb-1" aria-hidden={true} focusable="false" />
                   EXIT
               </a>
